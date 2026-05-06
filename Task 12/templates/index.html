@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Wellness Bot</title>
+    <style>
+        :root {
+            --primary: #2dd4bf;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #f43f5e;
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: 2px solid #334155;
+            background: #0f172a;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        .send-btn {
+            background-color: var(--primary);
+            color: #0f172a;
+            border: none;
+            padding: 0 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .response-box {
+            background: rgba(45, 212, 191, 0.1);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border-left: 5px solid var(--primary);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .query-text {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .answer-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .metadata {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #64748b;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <h1>Wellness Assistant</h1>
+    
+    <form action="/" method="POST" class="input-group">
+        <input type="text" name="query" placeholder="Ask me about mental health or wellness..." required>
+        <button type="submit" class="send-btn">Ask</button>
+    </form>
+
+    {% if response %}
+    <div class="response-box">
+        <div class="query-text">Your question: <strong>{{ query }}</strong></div>
+        <div class="answer-text">{{ response }}</div>
+        
+        {% if matched %}
+        <div class="metadata">
+            <span>Closest Match: {{ matched }}</span>
+            <span>Similarity Score: {{ "%.4f"|format(score) }}</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div style="margin-top: 2rem; font-size: 0.8rem; text-align: center; color: #475569;">
+        Powered by FAISS & Sentence-Transformers (MiniLM)
+    </div>
+</div>
+
+</body>
+</html>
