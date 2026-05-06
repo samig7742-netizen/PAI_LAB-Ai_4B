@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Face Profiler</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        .upload-section {
+            border: 2px dashed #475569;
+            padding: 3rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            transition: border-color 0.3s;
+        }
+
+        .upload-section:hover {
+            border-color: var(--primary);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .face-img {
+            width: 100%;
+            border-radius: 1rem;
+            border: 4px solid #334155;
+        }
+
+        .profile-card {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 1rem;
+        }
+
+        .p-type {
+            font-size: 2rem;
+            color: #818cf8;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .measurements {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .error {
+            color: #ef4444;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Face Profiler Pro</h1>
+    <p class="subtitle">AI-Powered Facial Feature Measurement & Personality Analysis</p>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form action="/" method="post" enctype="multipart/form-data" class="upload-section" id="upload-form">
+        <label for="file-upload" class="btn">Choose Image</label>
+        <input id="file-upload" type="file" name="file" onchange="document.getElementById('upload-form').submit();">
+        <p style="margin-top: 1rem; font-size: 0.8rem; color: #64748b;">Upload a clear portrait photo for best results</p>
+    </form>
+
+    {% if result %}
+    <div class="results">
+        <div>
+            <img src="{{ image }}" class="face-img" alt="Analyzed Face">
+        </div>
+        <div class="profile-card">
+            <h3 style="margin-top: 0;">Predicted Profile</h3>
+            <p class="p-type">{{ result.type }}</p>
+            <p style="color: #94a3b8; font-style: italic;">"{{ result.description }}"</p>
+            
+            <div class="measurements">
+                <strong>Feature Metrics:</strong>
+                <ul style="padding-left: 1.2rem;">
+                    {% for key, val in result.measurements.items() %}
+                    <li>{{ key }}: {{ val }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <a href="/" class="btn" style="display: inline-block; margin-top: 1.5rem; text-decoration: none;">Try Another</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
