@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Weather Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Climate Explorer 🌍</h1>
+
+        <form method="POST">
+            <input type="text" name="city" placeholder="Search for a city..." required>
+            <button type="submit">Get Forecast</button>
+        </form>
+
+        {% if weather_info %}
+            {% if weather_info.err_msg %}
+                <p class="error">{{ weather_info.err_msg }}</p>
+            {% else %}
+                <div class="card">
+                    <h2>{{ weather_info.town }}</h2>
+                    <p>Temperature: {{ weather_info.celsius }}°C</p>
+                    <p>Humidity Levels: {{ weather_info.moisture }}%</p>
+                    <p>Conditions: {{ weather_info.summary }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
